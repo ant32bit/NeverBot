@@ -1,0 +1,18 @@
+{
+  "name": "never-bot",
+  "version": "1.0.0",
+  "description": "NeverBot API",
+  "main": "./dist/index.js",
+  "scripts": {
+    "start": "tsc && node ./dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ant32bit",
+  "license": "ISC",
+  "dependencies": {
+    "@types/mocha": "^5.2.3",
+    "@types/node": "^10.3.5",
+    "discord.js": "^11.3.2",
+    "node": "^10.5.0"
+  }
+}
