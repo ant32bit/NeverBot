@@ -16,4 +16,4 @@ client.on('message', msg => {
     router.Evaluate(msg);
 });
 
-client.login('token');client.login('token');
+client.login('token');
