@@ -42,16 +42,14 @@ export abstract class NeverRoutes {
             }
         });
 
-        router.RegisterRoute('i have', (c, m) => {
+        router.RegisterOptionsRoutes(['i have'], (o, m) => {
             const serverId = m.channel.id;
             if (!this.servers[serverId]) {
                 return;
             }
 
-            if (c.args.join('').trim().length == 0) {
-                this.servers[serverId].Confess(m.author);
-                m.channel.send(`${m.author.username} has!`).then(msg => (<Message>msg).delete(1000));
-            }
+            this.servers[serverId].Confess(m.author);
+            m.channel.send(`${m.author.username} has!`).then(msg => (<Message>msg).delete(1000));
         });
     }
 }

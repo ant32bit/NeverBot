@@ -12,7 +12,8 @@
             "preLaunchTask": "tsc: build - tsconfig.json",
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
-            ]
+            ],
+            "cwd": "${workspaceFolder}"
         },
         {
             "type": "node",
@@ -22,7 +23,8 @@
             "preLaunchTask": "tsc: build - tsconfig.json",
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
-            ]
+            ],
+            "cwd": "${workspaceFolder}"
         }
     ]
 }

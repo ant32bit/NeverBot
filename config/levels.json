@@ -1,0 +1,38 @@
+[
+    { 
+        "level": 1,
+        "xp_req": 0,
+        "hp_max": 10, 
+        "hp_rate": 0.3, 
+        "ap_max": 3, 
+        "ap_rate": 0.1,
+        "atk_min": 1,
+        "atk_max": 3,
+        "crit_rate": 0.01,
+        "crit_mult": 1.5
+    },
+    { 
+        "level": 2,
+        "xp_req": 10,
+        "hp_max": 13, 
+        "hp_rate": 0.35, 
+        "ap_max": 3, 
+        "ap_rate": 0.15,
+        "atk_min": 1,
+        "atk_max": 4,
+        "crit_rate": 0.011,
+        "crit_mult": 1.5
+    },
+    { 
+        "level": 3,
+        "xp_req": 25,
+        "hp_max": 20, 
+        "hp_rate": 0.45, 
+        "ap_max": 3, 
+        "ap_rate": 0.2,
+        "atk_min": 2,
+        "atk_max": 5,
+        "crit_rate": 0.013,
+        "crit_mult": 1.5
+    }
+]

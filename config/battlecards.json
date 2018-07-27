@@ -1,0 +1,15 @@
+[
+    {
+        "id": "sword",
+        "name": "Short Sword",
+        "description": "A simple sword for slashing enemies.",
+        "rarity": "C",
+        "attributes": [
+            {
+                "name": "Well Balanced",
+                "description": "The perfectly balanced hilt allow every hit to pack an extra 2 - 4 dmg",
+                "modifiers": [ "minor-atk-up" ]
+            }
+        ]
+    }
+]
