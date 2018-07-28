@@ -12,18 +12,25 @@ export abstract class AdminRoutes {
         const _sendWarnSyntax = (channel: TextChannel) => {
             channel.send(new RichEmbed()
                 .setColor(0xf44542)
-                .setDescription("syntax: n$warn <member> <reason>")
+                .setDescription("syntax: warn <member> <reason>")
+            );
+        }
+
+        const _sendUnwarnSyntax = (channel: TextChannel) => {
+            channel.send(new RichEmbed()
+                .setColor(0xf44542)
+                .setDescription("syntax: unwarn <member>")
             );
         }
 
         const _sendWarningsSyntax = (channel: TextChannel) => {
             channel.send(new RichEmbed()
                 .setColor(0xf44542)
-                .setDescription("syntax: n$warnings [<member>]")
+                .setDescription("syntax: warnings [<member>]")
             );
         }
 
-        router.RegisterRoute('n$warn', (c, m) => {
+        router.RegisterRoute('warn', (c, m) => {
             if (m.author.bot) {return;}
 
             const guild = m.guild;
@@ -66,7 +73,76 @@ export abstract class AdminRoutes {
             _warningRepo.add(serverId, warnedMember.id, reason);
         });
 
-        router.RegisterRoute('n$warnings', (c, m) => {
+        router.RegisterRoute('unwarn', (c, m) => {
+            if (m.author.bot) {return;}
+
+            const guild = m.guild;
+            if (!guild) {return;}
+
+            const claimant = m.author.id;
+            const guildMember = guild.member(claimant);
+            if (!guildMember) {return;}
+
+            const channel = <TextChannel>(m.channel);
+
+            if (!guildMember.hasPermission("BAN_MEMBERS")) {
+                channel.send(new RichEmbed()
+                    .setColor(0xf44542)
+                    .setDescription("You must be an admin to unwarn someone")
+                );
+                return;
+            }
+
+            if (c.args.length != 1) {
+                _sendUnwarnSyntax(channel);
+                return;
+            }
+            
+            const memberId = MentionHelper.GetIdFromMention(c.args[0]);
+            if (!memberId) {
+                _sendUnwarnSyntax(channel);
+                return;
+            }
+
+            const warnedMember = m.mentions.members.get(memberId);
+            if (!warnedMember) {
+                _sendUnwarnSyntax(channel);
+                return;
+            }
+
+            const serverId = guild.id;
+
+            _warningRepo.getByUser(serverId, warnedMember.id, (e, w) => {
+                if (w.length === 0) {
+                    channel.send(new RichEmbed()
+                        .setColor(0xf44542)
+                        .setDescription(`${warnedMember.user.username} does not have any warnings`)
+                    );
+                    return;
+                }
+
+                m.channel.send(new RichEmbed()
+                    .setColor(0xe8cb29)
+                    .setDescription(`Unwarn ${warnedMember.user.username}? say \`yes\` to unwarn.`)
+                ).then(() => {
+                    const filter = response => 
+                        response.author.id === claimant && 
+                        response.content.trim().toLowerCase() === 'yes';
+
+                    m.channel.awaitMessages(filter, { maxMatches: 1, time: 30000, errors: ['time'] })
+                        .then(collected => {
+                            const warningId = w[w.length - 1].id;
+                            _warningRepo.delete(warningId);
+
+                            m.channel.send(new RichEmbed()
+                                .setColor(0xf44542)
+                                .setDescription(`${warnedMember.user.username}'s last warning has been deleted`));
+                        });
+                });
+            });
+        });
+
+        router.RegisterRoute('warnings', (c, m) => {
             if (m.author.bot) {return;}
 
             const guild = m.guild;
@@ -122,5 +198,7 @@ export abstract class AdminRoutes {
 
             _warningRepo.getByUser(guild.id, warnedMember.id, f);
         });
+
+
     }
 }

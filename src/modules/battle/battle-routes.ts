@@ -68,7 +68,7 @@ export abstract class BattleRoutes {
             }
         });
 
-        router.RegisterRoute('n$status', (c, m) => {
+        router.RegisterRoute('status', (c, m) => {
             let user = m.author;
 
             if (c.args.length === 1) { 

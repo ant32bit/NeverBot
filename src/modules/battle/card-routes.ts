@@ -40,7 +40,7 @@ export abstract class CardRoutes {
             }
         });
 
-        router.RegisterSubroute('n$card', 'daily', (c, m) => {
+        router.RegisterSubroute('card', 'daily', (c, m) => {
             let user = m.author;
             if (_playerRepo.getDaily(user.id)) {
                 const cardId = _gameData.PickCard();
@@ -81,7 +81,7 @@ export abstract class CardRoutes {
             }
         });
 
-        router.RegisterSubroute('n$card', 'list', (c, m) => {
+        router.RegisterSubroute('card', 'list', (c, m) => {
             const player = _playerRepo.getPlayer(m.author.id);
             
             let response = `**${m.author.username}**'s cards:\n`;
@@ -97,7 +97,7 @@ export abstract class CardRoutes {
             m.channel.send(response);
         });
 
-        router.RegisterSubroute('n$card', 'equip', (c, m) => {
+        router.RegisterSubroute('card', 'equip', (c, m) => {
             const player = _playerRepo.getPlayer(m.author.id);
             const i = _cardIdx[c.args[0]];
 
@@ -119,7 +119,7 @@ export abstract class CardRoutes {
             m.channel.send(`**${m.author.username}** equipped ${_gameData.GetCardData(card.id).name}.`);
         });
 
-        router.RegisterSubroute('n$card', 'unequip', (c, m) => {
+        router.RegisterSubroute('card', 'unequip', (c, m) => {
             const player = _playerRepo.getPlayer(m.author.id);
             const i = _cardIdx[c.args[0]];
 

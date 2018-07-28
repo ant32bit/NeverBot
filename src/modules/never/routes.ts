@@ -8,7 +8,7 @@ export abstract class NeverRoutes {
 
     public static RegisterRoutes(router: CommandRouterService) {
 
-        router.RegisterRoute('n$new', (c, m) => {
+        router.RegisterSubroute('never', 'new', (c, m) => {
             const serverId = m.channel.id;
             this.servers[serverId] = new NeverHaveIEverServer(serverId);
             const score = this.servers[serverId].GetScore();
@@ -16,7 +16,7 @@ export abstract class NeverRoutes {
             m.channel.send(`${score.question}\n\nIf *you* have, type \"I have\"`);
         });
 
-        router.RegisterRoute('n$next', (c, m) => {
+        router.RegisterSubroute('never', 'next', (c, m) => {
             const serverId = m.channel.id;
             if (!this.servers[serverId]) {
                 this.servers[serverId] = new NeverHaveIEverServer(serverId);
@@ -29,7 +29,7 @@ export abstract class NeverRoutes {
             m.channel.send(`${score.question}\n\nIf *you* have, type \"I have\"`);
         });
 
-        router.RegisterRoute('n$tally', (c, m) => {
+        router.RegisterSubroute('never', 'tally', (c, m) => {
             const serverId = m.channel.id;
             if (this.servers[serverId]) {
                 const score = this.servers[serverId].GetScore();

@@ -8,7 +8,7 @@ import { BattleRoutes } from './modules/battle/battle-routes';
 import { CardRoutes } from './modules/battle/card-routes';
 import { AdminRoutes } from './modules/admin/routes';
 
-const config = ConfigProvider.GetConfig<Config>('config.json');
+const config = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json');
 const client = new Client();
 const router = new CommandRouterService();
 NeverRoutes.RegisterRoutes(router);
@@ -27,7 +27,3 @@ client.on('message', msg => {
 });
 
 client.login(config.token);
-
-class Config {
-    token: string;
-}

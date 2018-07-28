@@ -6,7 +6,7 @@ export abstract class ConverterRoutes {
 
     public static RegisterRoutes(router: CommandRouterService) {
 
-        const help = "**n$convert usage**\nconvert numbers from one base to another\n\nprovide number in proper notation:\n**hex**: preceding 0x (e.g. 0x0fe392dd)\n**oct**: preceding 0 (e.g. 042)\n**dec**: no features (e.g. 1748)\n**bin**: ending b (e.g 01001110b)\n\nbase to convert to:\n`-bin`, `-oct`, `-dec`, `-hex`\nif not provided, default is dec.\n\nexample usage:\nn$convert 0x4857 -bin";
+        const help = "**convert usage**\nconvert numbers from one base to another\n\nprovide number in proper notation:\n**hex**: preceding 0x (e.g. 0x0fe392dd)\n**oct**: preceding 0 (e.g. 042)\n**dec**: no features (e.g. 1748)\n**bin**: ending b (e.g 01001110b)\n\nbase to convert to:\n`-bin`, `-oct`, `-dec`, `-hex`\nif not provided, default is dec.\n\nexample usage:\nn$convert 0x4857 -bin";
 
         const getBaseFromArg = (s: string): {base: number, prefix: string, suffix: string} => {
             return {
@@ -50,7 +50,7 @@ export abstract class ConverterRoutes {
             return null;
         }
 
-        router.RegisterRoute('n$convert', (c, m) => {
+        router.RegisterRoute('convert', (c, m) => {
             if (c.args.length < 1) {
                 m.channel.send(help).then(msg => (<Message>msg).delete(30000));
                 return;

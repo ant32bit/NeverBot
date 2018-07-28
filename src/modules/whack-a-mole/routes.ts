@@ -5,7 +5,7 @@ export abstract class WhackamoleRoutes {
 
     public static RegisterRoutes(router: CommandRouterService) {
 
-        router.RegisterRoute('n$whack', (c, m) => {
+        router.RegisterRoute('whack', (c, m) => {
             m.channel.send(new Whackamole(c.args.join('')).Result);
         });
     }

@@ -1,9 +1,16 @@
 import { CommandRouterService } from "./command-router";
 import { Command } from "./command";
+import * as ConfigProvider from "./config"
 
 export class CommandParser {
 
-    constructor (private _routerService: CommandRouterService) {}
+    private _prefix: string;
+
+    constructor (private _routerService: CommandRouterService)
+    {
+        const config = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json');
+        this._prefix = config.prefix.toLowerCase();
+    }
 
     public Parse(msg: string): Command {
 
@@ -12,12 +19,14 @@ export class CommandParser {
         const msgCaseInsensitive = msg.toLowerCase();
         const commands = this._routerService.GetAllCommands();
         for (let command of commands) {
-            if (msgCaseInsensitive === command) {
+            const parseCommand = this._prefix + command;
+
+            if (msgCaseInsensitive === parseCommand) {
                 return this.BuildCommand(command, '.', []);
             }
 
-            if (msgCaseInsensitive.startsWith(command + ' ')) {
-                const tail = this.StripLeading(msg, command);
+            if (msgCaseInsensitive.startsWith(parseCommand + ' ')) {
+                const tail = this.StripLeading(msg, parseCommand);
                 const tailCaseInsensitive = tail.toLowerCase();
                 
                 var subcommands = this._routerService.GetAllSubcommands(command);

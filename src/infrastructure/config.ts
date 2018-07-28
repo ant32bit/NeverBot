@@ -19,3 +19,8 @@ export function GetConfig<T>(filename: string): T {
         throw(`please set up ${configFilename}`);
     }
 }
+export class Config {
+    token: string;
+    db: string;
+    prefix: string;
+}
