@@ -70,7 +70,13 @@ export abstract class AdminRoutes {
             const reason = c.args.slice(1).join(" ");
             const serverId = guild.id;
 
+
             _warningRepo.add(serverId, warnedMember.id, reason);
+
+            m.channel.send(new RichEmbed()
+                .setColor(0xf44542)
+                .setDescription(`${warnedMember.user.username} has been warned.`)
+            );
         });
 
         router.RegisterRoute('unwarn', (c, m) => {
@@ -158,16 +164,43 @@ export abstract class AdminRoutes {
                     return;
                 }
 
-                const embed = new RichEmbed().setColor(0xb2e829);
+                if (w.length === 0) {
+                    m.channel.send(new RichEmbed()
+                        .setColor(0xe8cb29)
+                        .setDescription("There are no warnings issued")
+                    );
+                    return;
+                }
+
+                const warningSets: {[id: string]: Warning[]} = {};
                 w.forEach(x => {
-                    const member = guild.members.get(x.user);
+                    if (!warningSets[x.user]) {
+                        warningSets[x.user] = [];
+                    }
+
+                    warningSets[x.user].push(x);
+                });
+
+                const warnedUsernames: {[name: string]: string} = {};
+                Object.keys(warningSets).forEach(x => {
+                    const member = guild.members.get(x);
                     if (member) {
-                        embed.addField(
-                            `${member.user.username} - ${new Date(x.date).toLocaleDateString('en-AU')}`, 
-                            `for ${x.reason}\n`
-                        );
+                        warnedUsernames[member.user.username] = x;
                     }
                 })
+
+                const embed = new RichEmbed().setColor(0xb2e829);
+                Object.keys(warnedUsernames).sort().forEach(username => {
+                    const id = warnedUsernames[username];
+                    const warnings = warningSets[id];
+
+                    const userDescription = `${username} (${warnings.length})`;
+                    const reasons = warnings
+                        .map(x => `for ${x.reason} (${new Date(x.date).toLocaleDateString('en-AU')})`)
+                        .join('\n');
+
+                    embed.addField(userDescription, reasons);
+                });
 
                 m.channel.send(embed);
             }

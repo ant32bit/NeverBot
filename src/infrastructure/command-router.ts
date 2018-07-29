@@ -53,16 +53,20 @@ export class CommandRouterService {
     }
 
     public async Evaluate(message: Message) {
+        try {
+            const opt = message.content.trim().toLowerCase();
+            if (this.IsOption(opt)) {
+                this._optionRoutes[opt].forEach(async f => { await f(opt, message) });
+                return;
+            }
 
-        const opt = message.content.trim().toLowerCase();
-        if (this.IsOption(opt)) {
-            this._optionRoutes[opt].forEach(async f => { await f(opt, message) });
-            return;
+            const cmd = this._parser.Parse(message.content);
+            if (cmd) {
+                await this._routes[cmd.command].subcommands[cmd.subcommand](cmd, message);
+            }
         }
-
-        const cmd = this._parser.Parse(message.content);
-        if (cmd) {
-            await this._routes[cmd.command].subcommands[cmd.subcommand](cmd, message);
+        catch (ex) {
+            console.log(`There was an error processing command: ${message.content}`, ex);
         }
     }
 }
