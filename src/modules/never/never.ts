@@ -45,7 +45,7 @@ export class NeverHaveIEverServer {
         }
     }
 
-    public GetScore(): NeverHaveIEverScore {
+    public GetState(): NeverHaveIEverState {
         console.log(`request for tally on ${this._server}`);
 
         const tally: {[user: string]: number} = {};
@@ -60,19 +60,19 @@ export class NeverHaveIEverServer {
             }
         }
         
-        const score = <NeverHaveIEverScore>{
+        const state = <NeverHaveIEverState>{
             scores: [],
             question: Questions.List[this._scores[this._currentGame].questionId],
             admitters: this._scores[this._currentGame].admitters.map(x => x.name).sort()
         }
 
         for(let name of Object.keys(tally)) {
-            score.scores.push({ name: name, score: tally[name] });
+            state.scores.push({ name: name, score: tally[name] });
         }
 
-        score.scores = score.scores.sort((a,b) => { return b.score > a.score ? 1 : b.score < a.score ? -1 : 0; });
+        state.scores = state.scores.sort((a,b) => { return b.score > a.score ? 1 : b.score < a.score ? -1 : 0; });
     
-        return score;
+        return state;
     }
 
     private _reset() {
@@ -88,7 +88,7 @@ class NeverHaveIEverGame {
     public admitters: { id: string, name: string }[];    
 }
 
-export class NeverHaveIEverScore {
+export class NeverHaveIEverState {
     public scores: { name: string, score: number }[];
     public question: string;
     public admitters: string[];

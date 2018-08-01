@@ -1,6 +1,9 @@
 import { CommandRouterService } from "../../infrastructure/command-router";
 import { NeverHaveIEverServer } from "./never";
 import { Message } from "discord.js";
+import { NeverMessages } from "./messages";
+
+const _messages = new NeverMessages();
 
 export abstract class NeverRoutes {
 
@@ -11,9 +14,8 @@ export abstract class NeverRoutes {
         router.RegisterSubroute('never', 'new', (c, m) => {
             const serverId = m.channel.id;
             this.servers[serverId] = new NeverHaveIEverServer(serverId);
-            const score = this.servers[serverId].GetScore();
-
-            m.channel.send(`${score.question}\n\nIf *you* have, type \"I have\"`);
+            const state = this.servers[serverId].GetState();
+            m.channel.send(_messages.Question(state));
         });
 
         router.RegisterSubroute('never', 'next', (c, m) => {
@@ -25,20 +27,18 @@ export abstract class NeverRoutes {
                 this.servers[serverId].Next();
             }
 
-            const score = this.servers[serverId].GetScore();
-            m.channel.send(`${score.question}\n\nIf *you* have, type \"I have\"`);
+            const state = this.servers[serverId].GetState();
+            m.channel.send(_messages.Question(state));
         });
 
         router.RegisterSubroute('never', 'tally', (c, m) => {
             const serverId = m.channel.id;
             if (this.servers[serverId]) {
-                const score = this.servers[serverId].GetScore();
-
-                const tallyText = score.scores.map(x => `${x.name} - ${x.score}`).join('\n');
-                m.channel.send(`Here are the scores\n\n${tallyText}`);
+                const state = this.servers[serverId].GetState();
+                m.channel.send(_messages.Tally(state));
             }
             else {
-                m.channel.send('Never Have I Ever has not started. To start a game, type `n$new`');
+                m.channel.send(_messages.NoGame());
             }
         });
 
@@ -49,7 +49,8 @@ export abstract class NeverRoutes {
             }
 
             this.servers[serverId].Confess(m.author);
-            m.channel.send(`${m.author.username} has!`).then(msg => (<Message>msg).delete(1000));
+            m.channel.send(_messages.OnConfession(m.author.username))
+                .then(msg => (<Message>msg).delete(1000));
         });
     }
 }

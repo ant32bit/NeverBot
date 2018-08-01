@@ -4,8 +4,8 @@ import * as ConfigProvider from './infrastructure/config';
 import { NeverRoutes } from './modules/never/routes';
 import { WhackamoleRoutes } from './modules/whack-a-mole/routes';
 import { ConverterRoutes } from './modules/convert/routes';
-import { BattleRoutes } from './modules/battle/battle-routes';
-import { CardRoutes } from './modules/battle/card-routes';
+import { BattleRoutes } from './modules/battle/battle/routes';
+import { CardRoutes } from './modules/battle/cards/routes';
 import { AdminRoutes } from './modules/admin/routes';
 
 const config = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json');

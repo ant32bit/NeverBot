@@ -1,6 +1,9 @@
 import { CommandRouterService } from "../../infrastructure/command-router";
 import { Message } from "discord.js";
 import { Converter } from './convert';
+import { ConverterMessages } from "./messages";
+
+const _message = new ConverterMessages();
 
 export abstract class ConverterRoutes {
 
@@ -52,7 +55,7 @@ export abstract class ConverterRoutes {
 
         router.RegisterRoute('convert', (c, m) => {
             if (c.args.length < 1) {
-                m.channel.send(help).then(msg => (<Message>msg).delete(30000));
+                m.channel.send(_message.Syntax()).then(msg => (<Message>msg).delete(30000));
                 return;
             }
 
@@ -60,29 +63,15 @@ export abstract class ConverterRoutes {
             const toBase = getBaseFromArg(c.args.length >= 2 ? c.args[1] : '-dec');
 
             if (number === null || toBase === null) {
-                m.channel.send(help).then(msg => (<Message>msg).delete(30000));
+                m.channel.send(_message.Syntax()).then(msg => (<Message>msg).delete(30000));
                 return;
             }
 
             const converted = toBase.prefix + Converter.ChangeBase(number.value, number.base, toBase.base) + toBase.suffix
 
-            m.channel.send(`${c.args[0].toLowerCase()} = ${converted}`);
+            m.channel.send(_message.Output(c.args[0].toLowerCase(), converted));
         });
     }
 }
 
-// convert numbers from one base to another
-// 
-// provide number in proper notation:
-// **hex**: preceding 0x (e.g. 0x0fe392dd)
-// **oct**: preceding 0 (e.g. 042)
-// **dec**: no features (e.g. 1748)
-// **bin**: ending b (e.g 01001110b)
-// 
-// base to convert to:
-// `-bin`, `-oct`, `-dec`, `-hex`
-// if not provided, default is dec.
-//
-// example usage: 
-// n$convert 0x4857 -bin
-//
+

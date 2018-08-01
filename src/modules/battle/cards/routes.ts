@@ -1,7 +1,7 @@
-import { CommandRouterService } from "../../infrastructure/command-router";
+import { CommandRouterService } from "../../../infrastructure/command-router";
 import { Message } from "discord.js";
-import { PlayersRepo } from "./players";
-import { GameDataRepo, CardData } from "./gamedata";
+import { PlayersRepo } from "../players";
+import { GameDataRepo, CardData } from "../gamedata";
 
 export abstract class CardRoutes {
     public static RegisterRoutes(router: CommandRouterService) {

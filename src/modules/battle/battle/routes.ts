@@ -1,7 +1,7 @@
-import { CommandRouterService } from "../../infrastructure/command-router";
-import { PlayersRepo } from "./players";
-import { GameEngine } from "./gameengine";
-import { MentionHelper } from "../../infrastructure/mention-helper";
+import { CommandRouterService } from "../../../infrastructure/command-router";
+import { MentionHelper } from "../../../infrastructure/mention-helper";
+import { PlayersRepo } from "../players";
+import { GameEngine } from "../gameengine";
 
 export abstract class BattleRoutes {
     public static RegisterRoutes(router: CommandRouterService) {
