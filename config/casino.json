@@ -1,0 +1,43 @@
+{
+    "slots": {
+        "symbols": {
+            "jewels": [
+                ":crown:"
+            ],
+            "fruit": [
+                ":apple:",
+                ":strawberry:",
+                ":cherries:"
+            ],
+            "vegetables": [
+                ":corn:",
+                ":carrot:",
+                ":eggplant:",
+                ":potato:",
+                ":cucumber:"
+            ],
+            "junk": [
+                ":hamburger:",
+                ":hotdog:",
+                ":pizza:",
+                ":cake:",
+                ":popcorn:",
+                ":lollipop:",
+                ":doughnut:",
+                ":icecream:",
+                ":candy:",
+                ":chocolate_bar:"
+            ]
+        },
+        "patterns": {
+            "three_jewels": { "name": "**Three Kings**", "multiplier": 6 },
+            "two_jewels": { "name": "The throne room", "multiplier": 5 },
+            "one_jewel": { "name": "Fit for a king", "multiplier": 2 },
+            "three_of_a_kind": { "name": "Three of a kind", "multiplier": 2 },
+            "three_fruit": { "name": "Fruit Platter", "multiplier": 4 },
+            "three_vegies": { "name": "A side of greens", "multiplier": 3 },
+            "three_fruit_and_veg": { "name": "A balanced diet", "multiplier": 2 },
+            "at_least_one_fv": { "name": "Trying to be healthy", "multiplier": 1 }
+        }
+    }
+}

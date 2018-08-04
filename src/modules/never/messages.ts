@@ -22,7 +22,11 @@ export class NeverMessages {
     }
 
     public Tally(state: NeverHaveIEverState) {
-        const tallyText = state.scores.map(x => `${x.name} - ${x.score}`).join('\n');
+        let tallyText = state.scores.map(x => `${x.name} - ${x.score}`).join('\n');
+        if (tallyText.length === 0) {
+            tallyText = "No one has done anything!";
+        }
+
         return new RichEmbed()
             .setColor(this._colourGame)
             .addField('Never Have I Ever Tally', tallyText);

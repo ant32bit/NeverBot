@@ -1,4 +1,5 @@
 import * as sqlite3 from "sqlite3";
+import * as ConfigProvider from '../../infrastructure/config';
 
 const _dayInMs = 1000 * 60 * 60 * 24;
 const _warnings: Warning[] = [];
@@ -7,7 +8,8 @@ export class WarningRepository {
     private _db: sqlite3.Database;
 
     constructor() {
-        this._db = new sqlite3.Database('./config/never.db');
+        const dbLocation = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json').db;
+        this._db = new sqlite3.Database(dbLocation);
         this._db.run(`CREATE TABLE IF NOT EXISTS warnings (
             id integer PRIMARY KEY,
             server text NOT NULL,

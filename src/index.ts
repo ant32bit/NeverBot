@@ -7,6 +7,8 @@ import { ConverterRoutes } from './modules/convert/routes';
 import { BattleRoutes } from './modules/battle/battle/routes';
 import { CardRoutes } from './modules/battle/cards/routes';
 import { AdminRoutes } from './modules/admin/routes';
+import { BankRoutes } from './modules/bank/routes';
+import { CasinoRoutes } from './modules/casino/routes';
 
 const config = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json');
 const client = new Client();
@@ -14,6 +16,8 @@ const router = new CommandRouterService();
 NeverRoutes.RegisterRoutes(router);
 WhackamoleRoutes.RegisterRoutes(router);
 ConverterRoutes.RegisterRoutes(router);
+BankRoutes.RegisterRoutes(router);
+CasinoRoutes.RegisterRoutes(router);
 //BattleRoutes.RegisterRoutes(router);
 //CardRoutes.RegisterRoutes(router);
 AdminRoutes.RegisterRoutes(router);

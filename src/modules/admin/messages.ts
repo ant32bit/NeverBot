@@ -1,6 +1,6 @@
 import { RichEmbed, Guild } from "discord.js";
-import * as ConfigProvider from '../../infrastructure/config';
 import { Warning } from "./warnings-repo";
+import * as ConfigProvider from '../../infrastructure/config';
 
 export class AdminMessages {
 

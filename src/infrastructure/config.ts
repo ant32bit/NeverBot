@@ -21,6 +21,9 @@ export function GetConfig<T>(filename: string): T {
 }
 export class Config {
     token: string;
+    adminServer: string;
     db: string;
     prefix: string;
+    allowance: number;
+    currency: string;
 }
