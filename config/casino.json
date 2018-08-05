@@ -17,9 +17,6 @@
                 ":cucumber:"
             ],
             "junk": [
-                ":hamburger:",
-                ":hotdog:",
-                ":pizza:",
                 ":cake:",
                 ":popcorn:",
                 ":lollipop:",
@@ -37,6 +34,9 @@
             "three_fruit": { "name": "Fruit Platter", "multiplier": 4 },
             "three_vegies": { "name": "A side of greens", "multiplier": 3 },
             "three_fruit_and_veg": { "name": "A balanced diet", "multiplier": 2 },
+            "two_fruit": { "name": "Fruity dessert", "multiplier": 3 },
+            "two_vegies": { "name": "Am I doing it right?", "multiplier": 2 },
+            "two_fruit_and_veg": { "name": "A naughty treat", "multiplier": 1 },
             "at_least_one_fv": { "name": "Trying to be healthy", "multiplier": 1 }
         }
     }

@@ -46,14 +46,26 @@ export class CasinoEngine {
             patterns.push("three_of_a_kind");
         }
 
-        if (counts["fruit"] === 3) {
-            patterns.push("three_fruit");
+        if (counts["jewels"] !== 3) {
+            if (counts["fruit"] === 3) {
+                patterns.push("three_fruit");
+            }
+            else if (counts["vegetables"] === 3) {
+                patterns.push("three_vegies");
+            }
+            else if (counts["jewel"] + counts["fruit"] + counts["vegetables"] === 3) {
+                patterns.push("three_fruit_and_veg");
+            }
         }
-        else if (counts["vegetables"] === 3) {
-            patterns.push("three_vegies");
+
+        if (counts["fruit"] === 2) {
+            patterns.push("two_fruit");
         }
-        else if (counts["jewel"] + counts["fruit"] + counts["vegetables"] === 3) {
-            patterns.push("three_fruit_and_veg");
+        else if (counts["vegetables"] === 2) {
+            patterns.push("two_vegies");
+        }
+        else if (counts["fruit"] + counts["vegetables"] === 2) {
+            patterns.push("two_fruit_and_veg");
         }
 
         if (patterns.length === 0 && (counts["fruit"] > 0 || counts["vegetables"] > 0)) {
@@ -100,7 +112,7 @@ export class SlotValue {
     value: string;
 }
 
-class CasinoSettings {
+export class CasinoSettings {
     slots: {
         symbols: {
             jewels:string[], 

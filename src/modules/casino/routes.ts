@@ -1,16 +1,22 @@
 import { CommandRouterService } from "../../infrastructure/command-router";
-import { Message } from "discord.js";
+import { Message, RichEmbed } from "discord.js";
 import { CasinoMessages } from "./messages";
 import { CasinoEngine } from "./casino";
 import { BankRepository } from "../bank/bank-repo";
+import { CasinoStats } from "./casino-stats";
 
 const _message = new CasinoMessages();
 const _casino = new CasinoEngine();
+const _stats = new CasinoStats();
 const _bank = new BankRepository();
 
 export abstract class CasinoRoutes {
 
     public static RegisterRoutes(router: CommandRouterService) {
+
+        router.RegisterSubroute('slots', 'e', (c, m) => {
+            return m.channel.send(new RichEmbed().setColor(0xa59c8b).setDescription(`E(*x*) = ${_stats.E}`));
+        });
 
         router.RegisterRoute('slots', (c, m) => {
             if (c.args.length !== 1) {
