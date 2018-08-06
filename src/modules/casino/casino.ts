@@ -1,6 +1,7 @@
 import * as ConfigProvider from '../../infrastructure/config';
 
 const settings = ConfigProvider.GetConfig<CasinoSettings>('casino.json');
+const cooldowns: {[user: string]: number} = {};
 
 export class CasinoEngine {
 
@@ -14,6 +15,21 @@ export class CasinoEngine {
             })));
         }
     }
+
+    public getCooldown(user: string): number {
+        const rn = Date.now();
+
+        if (cooldowns[user]) {
+            const elapsed = rn - cooldowns[user];
+
+            if (elapsed < settings.cooldown) {
+                return Math.ceil((settings.cooldown - elapsed) / 1000);
+            }
+        }
+
+        cooldowns[user] = rn;
+        return 0;
+    } 
 
     public slots(): SlotsResult { 
 
@@ -46,16 +62,14 @@ export class CasinoEngine {
             patterns.push("three_of_a_kind");
         }
 
-        if (counts["jewels"] !== 3) {
-            if (counts["fruit"] === 3) {
-                patterns.push("three_fruit");
-            }
-            else if (counts["vegetables"] === 3) {
-                patterns.push("three_vegies");
-            }
-            else if (counts["jewel"] + counts["fruit"] + counts["vegetables"] === 3) {
-                patterns.push("three_fruit_and_veg");
-            }
+        if (counts["fruit"] === 3) {
+            patterns.push("three_fruit");
+        }
+        else if (counts["vegetables"] === 3) {
+            patterns.push("three_vegies");
+        }
+        else if (counts["fruit"] + counts["vegetables"] === 3) {
+            patterns.push("three_fruit_and_veg");
         }
 
         if (counts["fruit"] === 2) {
@@ -113,6 +127,11 @@ export class SlotValue {
 }
 
 export class CasinoSettings {
+    cooldown: number;
+    bet: {
+        min: number,
+        max: number
+    };
     slots: {
         symbols: {
             jewels:string[], 
@@ -125,5 +144,5 @@ export class CasinoSettings {
                 multiplier: number
             }
         }
-    }
+    };
 }

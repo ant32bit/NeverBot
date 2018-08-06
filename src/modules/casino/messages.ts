@@ -30,6 +30,24 @@ export class CasinoMessages {
             .setDescription(`${username} does not have enough to place a bet`);
     }
 
+    public Cooldown(username: string, cooldown: number) {
+        return new RichEmbed()
+            .setColor(this._colourError)
+            .setDescription(`${username}, please wait **${cooldown}s** before trying again`);
+    }
+
+    public BetTooLow(username: string, minBet: number) {
+        return new RichEmbed()
+            .setColor(this._colourError)
+            .setDescription(`${username}, you must bet at least ${this._symbol}${minBet}`);
+    }
+
+    public BetTooHigh(username: string, maxBet: number) {
+        return new RichEmbed()
+            .setColor(this._colourError)
+            .setDescription(`${username}, maximum bet is ${this._symbol}${maxBet}`);
+    }
+
     public SlotResult(username: string, bet: number, winnings: number, result: SlotsResult) {
         const embed = new RichEmbed().setColor(this._colourResponse);
 

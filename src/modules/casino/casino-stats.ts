@@ -7,6 +7,9 @@ export class CasinoStats {
 
     private _E: number = 0;
     public get E(): number { return this._E; }
+    
+    private _M: string
+    public get M(): string { return this._M; }
 
     constructor() {
         const p: {[id: string]: number} = {};
@@ -84,14 +87,32 @@ export class CasinoStats {
         m["2j_fv"] = CasinoStats.CalcMult('at_least_one_fv');
 
         let pTotal = 0;
-        let E = 0;
+        let E: number = 0;
+        let M: {[multiplier: string]: number} = {};
 
         for (let x of Object.keys(m)) {
             pTotal += p[x];
             E += p[x] * m[x];
+
+            const mText = `${m[x]}x`;
+            if (!M[mText]) {
+                M[mText] = 0;
+            }
+
+            M[mText] += p[x];
+        }
+
+        const nMultis = Object.keys(M).length;
+        const mTexts: string[] = [];
+        for (let i = 0; mTexts.length < nMultis; i++) {
+            const mText = `${i}x`;
+            if (M[mText]) {
+                mTexts.push(`p(${mText}) = ${M[mText].toFixed(5)}`);
+            }
         }
 
         this._E = E;
+        this._M = mTexts.join('\n');
     }
 
     public static CalcMult(...mults: string[]) {

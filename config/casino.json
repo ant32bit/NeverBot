@@ -1,4 +1,6 @@
 {
+    "cooldown": 7000,
+    "bet": {"min": 5, "max": 5000},
     "slots": {
         "symbols": {
             "jewels": [
@@ -23,19 +25,28 @@
                 ":doughnut:",
                 ":icecream:",
                 ":candy:",
-                ":chocolate_bar:"
+                ":chocolate_bar:",
+                ":pizza:",
+                ":hamburge:",
+                ":rice_cracker:",
+                ":cookie:",
+                ":dango:",
+                ":rice_ball:",
+                ":fried_shrimp:",
+                ":fries:",
+                ":fish_cake:"
             ]
         },
         "patterns": {
-            "three_jewels": { "name": "**Three Kings**", "multiplier": 6 },
-            "two_jewels": { "name": "The throne room", "multiplier": 5 },
+            "three_jewels": { "name": "**Three Kings**", "multiplier": 5 },
+            "two_jewels": { "name": "The throne room", "multiplier": 3 },
             "one_jewel": { "name": "Fit for a king", "multiplier": 2 },
-            "three_of_a_kind": { "name": "Three of a kind", "multiplier": 2 },
-            "three_fruit": { "name": "Fruit Platter", "multiplier": 4 },
-            "three_vegies": { "name": "A side of greens", "multiplier": 3 },
+            "three_of_a_kind": { "name": "Three of a kind", "multiplier": 5 },
+            "three_fruit": { "name": "Fruit Platter", "multiplier": 3 },
+            "three_vegies": { "name": "A side of greens", "multiplier": 2 },
             "three_fruit_and_veg": { "name": "A balanced diet", "multiplier": 2 },
-            "two_fruit": { "name": "Fruity dessert", "multiplier": 3 },
-            "two_vegies": { "name": "Am I doing it right?", "multiplier": 2 },
+            "two_fruit": { "name": "Fruity dessert", "multiplier": 2 },
+            "two_vegies": { "name": "Am I doing it right?", "multiplier": 1 },
             "two_fruit_and_veg": { "name": "A naughty treat", "multiplier": 1 },
             "at_least_one_fv": { "name": "Trying to be healthy", "multiplier": 1 }
         }
