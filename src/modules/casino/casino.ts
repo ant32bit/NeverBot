@@ -1,6 +1,8 @@
-import * as ConfigProvider from '../../infrastructure/config';
+import { ConfigService } from "../../infrastructure/services";
+import { ICasinoSettings } from "../../infrastructure/configs";
 
-const settings = ConfigProvider.GetConfig<CasinoSettings>('casino.json');
+
+const settings = ConfigService.GetConfig<ICasinoSettings>('casino.json');
 const cooldowns: {[user: string]: number} = {};
 
 export class CasinoEngine {
@@ -126,23 +128,3 @@ export class SlotValue {
     value: string;
 }
 
-export class CasinoSettings {
-    cooldown: number;
-    bet: {
-        min: number,
-        max: number
-    };
-    slots: {
-        symbols: {
-            jewels:string[], 
-            fruit:string[], 
-            vegetables:string[], 
-            junk:string[] 
-        },
-        patterns: {[id: string]: {
-                name: string,
-                multiplier: number
-            }
-        }
-    };
-}

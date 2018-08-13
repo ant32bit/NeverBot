@@ -9,8 +9,6 @@ export abstract class ConverterRoutes {
 
     public static RegisterRoutes(router: CommandRouterService) {
 
-        const help = "**convert usage**\nconvert numbers from one base to another\n\nprovide number in proper notation:\n**hex**: preceding 0x (e.g. 0x0fe392dd)\n**oct**: preceding 0 (e.g. 042)\n**dec**: no features (e.g. 1748)\n**bin**: ending b (e.g 01001110b)\n\nbase to convert to:\n`-bin`, `-oct`, `-dec`, `-hex`\nif not provided, default is dec.\n\nexample usage:\nn$convert 0x4857 -bin";
-
         const getBaseFromArg = (s: string): {base: number, prefix: string, suffix: string} => {
             return {
                 '-bin': { base: 2, prefix: '', suffix: 'b' },

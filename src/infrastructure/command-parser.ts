@@ -1,6 +1,6 @@
 import { CommandRouterService } from "./command-router";
 import { Command } from "./command";
-import * as ConfigProvider from "./config"
+import { ConfigService } from "./services/config-service";
 
 export class CommandParser {
 
@@ -8,7 +8,7 @@ export class CommandParser {
 
     constructor (private _routerService: CommandRouterService)
     {
-        const config = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json');
+        const config = ConfigService.GetGlobalConfig();
         this._prefix = config.prefix.toLowerCase();
     }
 

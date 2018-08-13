@@ -1,6 +1,6 @@
 import { RichEmbed } from "discord.js";
-import * as ConfigProvider from '../../infrastructure/config';
 import { SlotsResult } from "./casino";
+import { ConfigService } from "../../infrastructure/services";
 
 export class CasinoMessages {
 
@@ -11,7 +11,7 @@ export class CasinoMessages {
     private _colourResponse = 0x0bd6e5;
 
     constructor() {
-        const config = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json');
+        const config = ConfigService.GetGlobalConfig();
         this._prefix = config.prefix;
         this._symbol = config.currency;
     }

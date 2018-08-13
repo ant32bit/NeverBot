@@ -1,4 +1,6 @@
-export abstract class MentionHelper {
+import { Message, Snowflake } from "discord.js";
+
+export abstract class MessageService {
     
     public static GetIdFromMention(mention: string): string {
         const match = /^<@!?(\d+)>$/.exec(mention);

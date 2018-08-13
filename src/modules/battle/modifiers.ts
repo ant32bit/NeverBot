@@ -1,7 +1,7 @@
-import { Player, Buff } from "./players";
-import { Modifier, GameDataRepo } from "./gamedata";
+import { IPlayer, Modifier, Buff } from "../../infrastructure/dtos";
 
-const passiveMods: {[mod: string]: (p: Player, m: Modifier) => void} = {
+
+const passiveMods: {[mod: string]: (p: IPlayer, m: Modifier) => void} = {
     "atkmod": (p, m) => {
         if (m.min != null && m.max != null) {
             p.atk.min += m.min;
@@ -10,7 +10,7 @@ const passiveMods: {[mod: string]: (p: Player, m: Modifier) => void} = {
     }
 }
 
-const buffs: {[mod: string]: (p: Player, b: Buff, m: Modifier) => void} = {
+const buffs: {[mod: string]: (p: IPlayer, b: Buff, m: Modifier) => void} = {
     "dead": (p, b, m) => {
         if (p.lastCalc - b.startDate >= 3600000) { // 1hr minute death
             p.buffs = [];
@@ -27,18 +27,8 @@ const buffs: {[mod: string]: (p: Player, b: Buff, m: Modifier) => void} = {
     }
 }
 
-const _gameData = new GameDataRepo();
-
-export function applyPassiveMod(p: Player, m: string) {
-    const modifier = _gameData.GetModifier(m);
-    if (!modifier) { return; }
-    if (!passiveMods[modifier.name]) { return }
-
-    passiveMods[modifier.name](p, modifier);
-}
-
-export function applyBuff(p: Player, b: Buff) {
-    const modifier = _gameData.GetModifier(b.status);
+export function applyBuff(p: IPlayer, b: Buff) {
+    const modifier = b.modifiers[0];
     if (!modifier) { return; }
     if (!buffs[modifier.name]) { return }
 
@@ -46,7 +36,7 @@ export function applyBuff(p: Player, b: Buff) {
 }
 
 abstract class ModifierHelper {
-    public static calculateEffectiveTime(p: Player, b: Buff, m: Modifier) {
+    public static calculateEffectiveTime(p: IPlayer, b: Buff, m: Modifier) {
         const elapsedTime = p.lastCalc - b.startDate;
         if (m.duration) {
             

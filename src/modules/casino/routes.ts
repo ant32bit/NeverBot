@@ -1,12 +1,13 @@
 import { CommandRouterService } from "../../infrastructure/command-router";
 import { Message, RichEmbed } from "discord.js";
 import { CasinoMessages } from "./messages";
-import { CasinoEngine, CasinoSettings } from "./casino";
-import { BankRepository } from "../bank/bank-repo";
+import { CasinoEngine } from "./casino";
 import { CasinoStats } from "./casino-stats";
-import * as ConfigProvider from '../../infrastructure/config';
+import { BankRepository } from "../../infrastructure/repositories";
+import { ConfigService } from "../../infrastructure/services";
+import { ICasinoSettings } from "../../infrastructure/configs";
 
-const _settings = ConfigProvider.GetConfig<CasinoSettings>('casino.json');
+const _settings = ConfigService.GetConfig<ICasinoSettings>('casino.json');
 const _message = new CasinoMessages();
 const _casino = new CasinoEngine();
 const _stats = new CasinoStats();

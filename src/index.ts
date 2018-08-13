@@ -1,16 +1,15 @@
 import { Client } from 'discord.js';
 import { CommandRouterService } from './infrastructure/command-router';
-import * as ConfigProvider from './infrastructure/config';
+import { ConfigService } from './infrastructure/services';
 import { NeverRoutes } from './modules/never/routes';
 import { WhackamoleRoutes } from './modules/whack-a-mole/routes';
 import { ConverterRoutes } from './modules/convert/routes';
 import { BattleRoutes } from './modules/battle/battle/routes';
-import { CardRoutes } from './modules/battle/cards/routes';
 import { AdminRoutes } from './modules/admin/routes';
 import { BankRoutes } from './modules/bank/routes';
 import { CasinoRoutes } from './modules/casino/routes';
 
-const config = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json');
+const config = ConfigService.GetGlobalConfig();
 const client = new Client();
 const router = new CommandRouterService();
 NeverRoutes.RegisterRoutes(router);
@@ -18,8 +17,7 @@ WhackamoleRoutes.RegisterRoutes(router);
 ConverterRoutes.RegisterRoutes(router);
 BankRoutes.RegisterRoutes(router);
 CasinoRoutes.RegisterRoutes(router);
-//BattleRoutes.RegisterRoutes(router);
-//CardRoutes.RegisterRoutes(router);
+BattleRoutes.RegisterRoutes(router);
 AdminRoutes.RegisterRoutes(router);
 
 client.on('ready', () => {

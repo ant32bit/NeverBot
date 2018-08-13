@@ -1,14 +1,13 @@
 import { CommandRouterService } from "../../infrastructure/command-router";
 import { Message } from "discord.js";
 import { BankMessages } from "./messages";
-import { BankAccount, BankRepository } from "./bank-repo";
-import * as ConfigProvider from '../../infrastructure/config';
-import { MentionHelper } from "../../infrastructure/mention-helper";
-import { Guards } from "../../infrastructure/guards";
+import { ConfigService, GuardsService, MessageService } from "../../infrastructure/services";
+import { BankRepository } from "../../infrastructure/repositories";
+import { IBankAccount } from "../../infrastructure/dtos";
 
 const _message = new BankMessages();
 const _bank = new BankRepository();
-const _dailyAmount = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json').allowance;;
+const _dailyAmount = ConfigService.GetGlobalConfig().allowance;
 
 export abstract class BankRoutes {
 
@@ -24,14 +23,14 @@ export abstract class BankRoutes {
 
         router.RegisterRoute('apply', (c, m) => {
             
-            if (!Guards.AuthenticateOwner(m)) {
+            if (!GuardsService.AuthenticateOwner(m)) {
                 return;
             }
 
             let amount: number = null;
             if (c.args.length === 2) {
                 
-                const applicantId = MentionHelper.GetIdFromMention(c.args[0]);
+                const applicantId = MessageService.GetIdFromMention(c.args[0]);
                 const applicant = applicantId ? m.mentions.users.get(applicantId) : null;
 
                 if (!applicant) {
@@ -75,7 +74,7 @@ export abstract class BankRoutes {
         });
     }
 
-    private static isDailyAvailable(acc: BankAccount, rn: Date): boolean {
+    private static isDailyAvailable(acc: IBankAccount, rn: Date): boolean {
         const ld = new Date(acc.lastDaily);
 
         if (rn.getUTCFullYear() > ld.getUTCFullYear() ||

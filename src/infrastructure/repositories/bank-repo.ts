@@ -1,11 +1,12 @@
 import * as sqlite3 from "sqlite3";
-import * as ConfigProvider from '../../infrastructure/config';
+import { ConfigService } from "../services/config-service";
+import { IBankAccount } from "../dtos/bank-account";
 
 export class BankRepository {
     private _db: sqlite3.Database;
 
     constructor() {
-        const dbLocation = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json').db;
+        const dbLocation = ConfigService.GetGlobalConfig().db;
         this._db = new sqlite3.Database(dbLocation);
         this._db.run(
             `CREATE TABLE IF NOT EXISTS bank (
@@ -18,7 +19,7 @@ export class BankRepository {
         );
     }
 
-    public update(acc: BankAccount, f?: (err: Error) => void) {
+    public update(acc: IBankAccount, f?: (err: Error) => void) {
         this.get(acc.user, (entry) => {
             if (entry.id) {
                 this._db.run(
@@ -36,10 +37,10 @@ export class BankRepository {
         })
     }
 
-    public get(user: string, f: (acc: BankAccount) => void) {
+    public get(user: string, f: (acc: IBankAccount) => void) {
         
         this._db.all(`SELECT * FROM bank WHERE user = ?`, [user], (err, rows) => {
-            const acc = !err && rows.length > 0 ? rows[0] : <BankAccount>{
+            const acc = !err && rows.length > 0 ? rows[0] : <IBankAccount>{
                 user: user,
                 amount: 0, 
                 lastDaily: 0,
@@ -51,10 +52,3 @@ export class BankRepository {
     }
 }
 
-export class BankAccount {
-    id?: number;
-    user: string;
-    amount: number;
-    lastDaily: number;
-    dailyStreak: number;
-}

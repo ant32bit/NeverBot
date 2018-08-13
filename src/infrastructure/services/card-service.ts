@@ -1,16 +1,16 @@
-import * as ConfigProvider from '../../infrastructure/config';
+import { ConfigService } from "../../infrastructure/services";
+import { Modifier } from "../dtos";
 
-const _level = ConfigProvider.GetConfig<LevelData[]>('levels.json');
 const _modifiers = ((): {[name: string]: Modifier} => {
     const modifiers: {[name: string]: Modifier} = {};
-    ConfigProvider.GetConfig<Modifier[]>('modifiers.json').forEach(x => modifiers[x.name] = x);
+    ConfigService.GetConfig<Modifier[]>('modifiers.json').forEach(x => modifiers[x.name] = x);
 
     return modifiers;
 })();
 
 const _cards = ((): {[id: string]: CardData} => {
     const cards: {[id: string]: CardData} = {};
-    ConfigProvider.GetConfig<CardData[]>('battlecards.json').forEach(x => cards[x.id] = x);
+    ConfigService.GetConfig<CardData[]>('battlecards.json').forEach(x => cards[x.id] = x);
 
     return cards;
 })();
@@ -26,14 +26,10 @@ const _cardRarity: { p: {[rarity: string]: number}; pTotal: number; } = (() => {
     return r;
 })();
 
-export class GameDataRepo {
+export class CardService {
     
     public GetCardData(id: string): CardData {
         return _cards[id];
-    }
-
-    public GetLevelData(level: number): LevelData {
-        return _level[level - 1];
     }
 
     public GetModifier(name: string): Modifier {
@@ -53,33 +49,6 @@ export class GameDataRepo {
 
         return null;
     }
-
-    public GetLevelForXp(xp: number): number {
-        for(let lvl = 0; lvl < _level.length; lvl++) {
-            if (_level[lvl].xp_req > xp) {
-                return lvl;
-            }
-        }
-
-        return _level.length;
-    }
-}
-
-export class LevelData {
-    level: number;
-    xp_req: number;
-
-    hp_max: number;
-    hp_rate: number;
-
-    ap_max: number;
-    ap_rate: number;
-    
-    atk_min: number;
-    atk_max: number;
-
-    crit_rate: number;
-    crit_mult: number;
 }
 
 export class CardData {
@@ -95,14 +64,4 @@ export class CardAttribute {
     description: string;
     type: string;
     modifiers: string[];
-}
-
-export class Modifier {
-    name: string;
-    mod: string;
-    min?: number;
-    max?: number;
-    percentage?: number;
-    duration?: number;
-    frequency?: number;
 }

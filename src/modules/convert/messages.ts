@@ -1,5 +1,5 @@
 import { RichEmbed } from "discord.js";
-import * as ConfigProvider from '../../infrastructure/config';
+import { ConfigService } from "../../infrastructure/services";
 
 export class ConverterMessages {
 
@@ -9,7 +9,7 @@ export class ConverterMessages {
     private _colourResponse = 0xc9a30c;
 
     constructor() {
-        this._prefix = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json').prefix;
+        this._prefix = ConfigService.GetGlobalConfig().prefix;
     }
 
     public Syntax() {

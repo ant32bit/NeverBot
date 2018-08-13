@@ -1,12 +1,17 @@
 import { CommandRouterService } from "../../infrastructure/command-router";
-import { MentionHelper } from "../../infrastructure/mention-helper";
-import { WarningRepository, Warning } from "./warnings-repo";
 import { AdminMessages } from "./messages";
+import { MessageService, GuardsService } from "../../infrastructure/services";
+import { IWarning } from "../../infrastructure/dtos";
+import { WarningRepository } from "../../infrastructure/repositories";
+import { Message, Channel } from "discord.js";
+import { PurgeGalleryCommand, CommandDispatcher } from "../../infrastructure/cqrs";
 
 const _warningRepo = new WarningRepository();
 const _messages = new AdminMessages();
 
 export abstract class AdminRoutes {
+
+    private static _commandDispatcher: CommandDispatcher = new CommandDispatcher();
 
     public static RegisterRoutes(router: CommandRouterService) {
         
@@ -30,7 +35,7 @@ export abstract class AdminRoutes {
                 return;
             }
             
-            const memberId = MentionHelper.GetIdFromMention(c.args[0]);
+            const memberId = MessageService.GetIdFromMention(c.args[0]);
             if (!memberId) {
                 m.channel.send(_messages.Syntax("warn"));
                 return;
@@ -70,7 +75,7 @@ export abstract class AdminRoutes {
                 return;
             }
             
-            const memberId = MentionHelper.GetIdFromMention(c.args[0]);
+            const memberId = MessageService.GetIdFromMention(c.args[0]);
             if (!memberId) {
                 m.channel.send(_messages.Syntax("unwarn"));
                 return;
@@ -97,7 +102,7 @@ export abstract class AdminRoutes {
                         response.content.trim().toLowerCase() === confirmCommand;
 
                     m.channel.awaitMessages(filter, { maxMatches: 1, time: 30000, errors: ['time'] })
-                        .then(collected => {
+                        .then(() => {
                             const warningId = w[w.length - 1].id;
                             _warningRepo.delete(warningId);
 
@@ -113,7 +118,7 @@ export abstract class AdminRoutes {
             const guild = m.guild;
             if (!guild) {return;}
 
-            const f = (e: Error, w: Warning[]) => {
+            const f = (e: Error, w: IWarning[]) => {
                 if (e) {
                     m.channel.send(_messages.DatabaseError("Couldn't get warnings"));
                     return;
@@ -124,7 +129,6 @@ export abstract class AdminRoutes {
                     return;
                 }
 
-                const warningSets: {[id: string]: Warning[]} = {};
                 m.channel.send(_messages.DisplayWarnings(w, id => {
                     const member = guild.members.get(id);
                     if (!member) { return null; }
@@ -142,7 +146,7 @@ export abstract class AdminRoutes {
                 return;
             }
             
-            const memberId = MentionHelper.GetIdFromMention(c.args[0]);
+            const memberId = MessageService.GetIdFromMention(c.args[0]);
             if (!memberId) {
                 m.channel.send(_messages.Syntax("warnings"));
                 return;
@@ -157,6 +161,30 @@ export abstract class AdminRoutes {
             _warningRepo.getByUser(guild.id, warnedMember.id, f);
         });
 
+        router.RegisterRoute('gallerypurge', (c, m) => {
+            if (c.args.length != 0) {
+                m.channel.send(_messages.Syntax("gallerypurge"));
+                return;
+            }
 
+            if (!GuardsService.AuthenticateChannelAdmin(m)) {
+                m.channel.send(_messages.RequiresAdmin("purge galleries"));
+                return;
+            }
+
+            const confirmCommand = 'yes';
+
+            m.channel.send(_messages.GenericWarning('**You are about to delete all text only messages from this channel.**\nThis cannot be undone\nType `yes` to continue.')).then(() => {
+                const filter = response => 
+                    response.author.id === m.author.id && 
+                    response.content.trim().toLowerCase() === confirmCommand;
+
+                m.channel.awaitMessages(filter, { maxMatches: 1, time: 30000, errors: ['time'] })
+                    .then(() => {
+                        this._commandDispatcher.dispatch(new PurgeGalleryCommand(m));
+                        m.channel.send(_messages.GenericSuccess("Gallery purge has begun..."));
+                    });
+            });
+        });
     }
 }

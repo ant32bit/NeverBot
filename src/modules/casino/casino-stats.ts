@@ -1,7 +1,8 @@
-import * as ConfigProvider from '../../infrastructure/config';
-import { CasinoSettings } from './casino';
+import { ConfigService } from "../../infrastructure/services";
+import { ICasinoSettings } from "../../infrastructure/configs";
 
-const settings = ConfigProvider.GetConfig<CasinoSettings>('casino.json');
+
+const settings = ConfigService.GetConfig<ICasinoSettings>('casino.json');
 
 export class CasinoStats {
 

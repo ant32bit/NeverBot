@@ -1,5 +1,5 @@
 import { RichEmbed, Guild } from "discord.js";
-import * as ConfigProvider from '../../../infrastructure/config';
+import { ConfigService } from "../../../infrastructure/services";
 
 export class BattleMessages {
 
@@ -10,7 +10,7 @@ export class BattleMessages {
     private _colourOK = 0xb2e829;
 
     constructor() {
-        this._prefix = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json').prefix;
+        this._prefix = ConfigService.GetGlobalConfig().prefix;
     }
 
     public Syntax(command: string) {

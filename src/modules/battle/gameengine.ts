@@ -1,8 +1,9 @@
-import { Player } from "./players";
+import { IPlayer } from "../../infrastructure/dtos";
+
 
 export class GameEngine {
 
-    public Attack(assailant: Player, victim: Player): AttackResult {
+    public Attack(assailant: IPlayer, victim: IPlayer): AttackResult {
 
         const apCost = 1;
         const xpGain = 1;
@@ -32,7 +33,7 @@ export class GameEngine {
         let dmg = Math.random() * (assailant.atk.max - assailant.atk.min) + assailant.atk.min;
         if (assailant.crit.rate > Math.random()) {
             result.critical = true;
-            dmg *= assailant.crit.multi;
+            dmg *= assailant.crit.mult;
         }
 
         dmg = Math.round(dmg);
@@ -42,7 +43,7 @@ export class GameEngine {
         victim.hp.curr -= dmg;
         if (victim.hp.curr <= 0) {
             result.dead = true;
-            victim.buffs = [{ status: 'dead', startDate: Date.now()}];
+            victim.buffs = [{ status: 'dead', emoji: ':skull_crossbones:', startDate: Date.now(), modifiers: []}];
             victim.hp.curr = 0;
         }
 

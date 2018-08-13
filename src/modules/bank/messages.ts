@@ -1,6 +1,6 @@
 import { RichEmbed } from "discord.js";
-import * as ConfigProvider from '../../infrastructure/config';
-import { BankAccount } from "./bank-repo";
+import { ConfigService } from "../../infrastructure/services";
+import { IBankAccount } from "../../infrastructure/dtos";
 
 export class BankMessages {
 
@@ -11,7 +11,7 @@ export class BankMessages {
     private _colourResponse = 0x0bd6e5;
 
     constructor() {
-        const config = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json');
+        const config = ConfigService.GetGlobalConfig();
         this._prefix = config.prefix;
         this._symbol = config.currency;
     }
@@ -34,7 +34,7 @@ export class BankMessages {
             .setDescription(`**${username}** has already received a daily. Try again tomorrow.`);
     }
 
-    public AccountDetails(username: string, acc: BankAccount) {
+    public AccountDetails(username: string, acc: IBankAccount) {
         return new RichEmbed()
             .setColor(this._colourResponse)
             .setDescription(`**${username}** has ${this._symbol}${acc.amount}`)

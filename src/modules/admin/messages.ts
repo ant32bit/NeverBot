@@ -1,6 +1,6 @@
 import { RichEmbed, Guild } from "discord.js";
-import { Warning } from "./warnings-repo";
-import * as ConfigProvider from '../../infrastructure/config';
+import { ConfigService } from "../../infrastructure/services/config-service";
+import { IWarning } from "../../infrastructure/dtos/warning";
 
 export class AdminMessages {
 
@@ -11,7 +11,7 @@ export class AdminMessages {
     private _colourOK = 0xb2e829;
 
     constructor() {
-        this._prefix = ConfigProvider.GetConfig<ConfigProvider.Config>('config.json').prefix;
+        this._prefix = ConfigService.GetGlobalConfig().prefix;
     }
 
     public Syntax(command: string) {
@@ -31,7 +31,13 @@ export class AdminMessages {
         if (command === "warnings") {
             return new RichEmbed()
                 .setColor(this._colourError)
-                .setDescription("syntax: warnings [<member>]");
+                .setDescription(`syntax: ${this._prefix}warnings [<member>]`);
+        } 
+        
+        if (command === "gallerypurge") {
+            return new RichEmbed()
+                .setColor(this._colourError)
+                .setDescription(`syntax: ${this._prefix}gallerypurge`);
         } 
 
         return null;
@@ -80,8 +86,8 @@ export class AdminMessages {
             .setDescription(`Unwarn ${username}? say \`${confirmCommand}\` to unwarn.`);
     }
 
-    public DisplayWarnings(warnings: Warning[], displayName: (id: string) => string) {
-        const warningSets: {[id: string]: Warning[]} = {};
+    public DisplayWarnings(warnings: IWarning[], displayName: (id: string) => string) {
+        const warningSets: {[id: string]: IWarning[]} = {};
         warnings.forEach(x => {
             if (!warningSets[x.user]) {
                 warningSets[x.user] = [];
@@ -113,4 +119,23 @@ export class AdminMessages {
 
         return embed;
     }
+
+    public GenericError(error: string) {
+        return new RichEmbed()
+            .setColor(this._colourError)
+            .setDescription(error);
+    }
+
+    public GenericWarning(warning: string) {
+        return new RichEmbed()
+            .setColor(this._colourWarning)
+            .setDescription(warning);
+    }
+
+    public GenericSuccess(message: string) {
+        return new RichEmbed()
+            .setColor(this._colourOK)
+            .setDescription(message);
+    }
+
 }
