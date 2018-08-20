@@ -1,6 +1,6 @@
 import * as sqlite3 from "sqlite3";
 import { ConfigService } from "../services/config-service";
-import { Buff, IPlayer, PlayerResource } from "../dtos";
+import { IPlayer, PlayerResource, IBuff } from "../dtos";
 import { QueryDispatcher, GetLevelQuery } from "../cqrs";
 import { ILevelData } from "../configs";
 
@@ -168,5 +168,5 @@ interface IPlayerCache {
     currHp: number;
     currAp: number;
     lastCalc: number;
-    buffs: Buff[];
+    buffs: IBuff[];
 }

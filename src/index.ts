@@ -4,10 +4,12 @@ import { ConfigService } from './infrastructure/services';
 import { NeverRoutes } from './modules/never/routes';
 import { WhackamoleRoutes } from './modules/whack-a-mole/routes';
 import { ConverterRoutes } from './modules/convert/routes';
-import { BattleRoutes } from './modules/battle/battle/routes';
+import { BattleRoutes } from './modules/battle/routes';
 import { AdminRoutes } from './modules/admin/routes';
 import { BankRoutes } from './modules/bank/routes';
 import { CasinoRoutes } from './modules/casino/routes';
+import { ShopRoutes } from './modules/shop/routes';
+import { ItemRoutes } from './modules/items/routes';
 
 const config = ConfigService.GetGlobalConfig();
 const client = new Client();
@@ -19,6 +21,8 @@ BankRoutes.RegisterRoutes(router);
 CasinoRoutes.RegisterRoutes(router);
 BattleRoutes.RegisterRoutes(router);
 AdminRoutes.RegisterRoutes(router);
+ShopRoutes.RegisterRoutes(router);
+ItemRoutes.RegisterRoutes(router);
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);

@@ -1,0 +1,80 @@
+
+[
+    { 
+        "name": "apple", 
+        "icon": "🍎", 
+        "buff": {
+            "name": "Health Up S",
+            "modifiers": [{
+                "mod": "hp_mod",
+                "min": 4,
+                "max": 6
+            }]
+        }
+    },
+
+    {
+        "name": "peach",
+        "icon": "🍑",
+        "buff": {
+            "name": "Health Up M",
+            "modifiers": [{
+                "mod": "hp_mod",
+                "min": 10,
+                "max": 15
+            }]
+        }
+    },
+
+    {
+        "name": "orange",
+        "icon": "🍊",
+        "buff": {
+            "name": "Health Up L",
+            "modifiers": [{
+                "mod": "hp_mod",
+                "min": 20,
+                "max": 30
+            }]
+        }
+    },
+
+    {
+        "name": "banana",
+        "icon": "🍌",
+        "buff": {
+            "name": "Health Up U",
+            "modifiers": [{
+                "mod": "hp_mod",
+                "min": 50,
+                "max": 150
+            }]
+        }
+    },
+
+    {
+        "name": "onigiri",
+        "icon": "🍙",
+        "buff": {
+            "name": "Stamina Up S",
+            "modifiers": [{
+                "mod": "ap_mod",
+                "min": 1
+            }]
+        }
+    },
+
+    {
+        "name": "lollipop",
+        "icon": "🍭",
+        "buff": {
+            "name": "Attack Up M",
+            "modifiers": [{
+                "mod": "atk_mod",
+                "min": 2,
+                "max": 5,
+                "duration": 30
+            }]
+        }
+    }
+]

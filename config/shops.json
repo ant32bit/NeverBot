@@ -1,0 +1,25 @@
+[
+    {
+        "id": "market",
+        "name": "Fresh Fruit & Vegetables",
+        "items": [
+            { "item": "apple", "price": 100 },
+            { "item": "peach", "price": 200 },
+            { "item": "orange", "price": 400 }
+        ]
+    },
+    {
+        "id": "meals",
+        "name": "Wholesome Meals",
+        "items": [
+            { "item": "onigiri", "price": 400 }
+        ]
+    },
+    {
+        "id": "sweets",
+        "name": "Candy & Desserts",
+        "items": [
+            { "item": "lollipop", "price": 350 }
+        ]
+    }
+]

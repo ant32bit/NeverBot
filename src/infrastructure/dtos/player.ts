@@ -1,3 +1,4 @@
+import { IBuff } from "./buff";
 
 export interface IPlayer {
     id: string;
@@ -8,7 +9,7 @@ export interface IPlayer {
     ap: PlayerResource;
     crit: CriticalRate;
     lastCalc: number;
-    buffs: Buff[];
+    buffs: IBuff[];
 }
 
 export class CriticalRate {
@@ -36,21 +37,4 @@ export class PlayerResource {
 export class RangedStat {
     min: number;
     max: number;
-}
-
-export class Buff {
-    status: string;
-    emoji: string;
-    startDate: number;
-    modifiers: Modifier[];
-}
-
-export class Modifier {
-    name: string;
-    mod: string;
-    min?: number;
-    max?: number;
-    percentage?: number;
-    duration?: number;
-    frequency?: number;
 }

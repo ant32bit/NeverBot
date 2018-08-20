@@ -29,7 +29,7 @@ export abstract class RichResponseService {
             .setColor(type);
 
         if (text && text.length > 0) {
-            text.replace('{prefix}', prefix);
+            text = text.replace('{prefix}', prefix);
             m.setDescription(text);
         }
 

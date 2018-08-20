@@ -9,24 +9,26 @@ export class GameEngine {
         const xpGain = 1;
 
         const result: AttackResult = {
+            assailaint: assailant,
+            victim: victim,
             success: false,
             apCost: 0,
             xpGain: 0
         };
 
         if (assailant.hp.curr === 0 || assailant.buffs.findIndex(x => x.status === 'dead') >= 0) {
-            result.failReason = "PLAYER_ALREADY_DEAD";
+            result.failReason = AttackFailReason.PLAYER_ALREADY_DEAD;
             return result;
         }
 
         if (assailant.ap.curr < result.apCost) {
-            result.failReason = "NOT_ENOUGH_AP";
+            result.failReason = AttackFailReason.NOT_ENOUGH_AP;
             result.apCost = apCost;
             return result;
         }
 
         if (victim.hp.curr === 0 || victim.buffs.findIndex(x => x.status === 'dead') >= 0) {
-            result.failReason = "VICTIM_ALREADY_DEAD";
+            result.failReason = AttackFailReason.VICTIM_ALREADY_DEAD;
             return result;
         }
 
@@ -43,7 +45,7 @@ export class GameEngine {
         victim.hp.curr -= dmg;
         if (victim.hp.curr <= 0) {
             result.dead = true;
-            victim.buffs = [{ status: 'dead', emoji: ':skull_crossbones:', startDate: Date.now(), modifiers: []}];
+            victim.buffs = [{ status: 'dead', icon: '☠️', startDate: Date.now(), modifiers: []}];
             victim.hp.curr = 0;
         }
 
@@ -59,12 +61,20 @@ export class GameEngine {
     }
 }
 
+export enum AttackFailReason {
+    NOT_ENOUGH_AP,
+    VICTIM_ALREADY_DEAD,
+    PLAYER_ALREADY_DEAD
+}
+
 export class AttackResult {
+    assailaint: IPlayer;
+    victim: IPlayer;
     success: boolean;
     apCost: number;
     xpGain: number;
     damage?: number;
     critical?: boolean;
     dead?: boolean;
-    failReason?: string;
+    failReason?: AttackFailReason;
 }
