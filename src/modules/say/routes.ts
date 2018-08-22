@@ -31,7 +31,7 @@ export abstract class SayRoutes {
                         console.log("Translation err", c, e);
                     }
 
-                    logs.log(server, user, text, t.translatedText, [t.detectSourceLanguage, target].join(':'));
+                    logs.log(server, user, text, t.translatedText, [t.detectedSourceLanguage, target].join(':'));
                     channel.send(t.translatedText);
                 });
             }

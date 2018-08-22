@@ -33,7 +33,7 @@ export abstract class TranslationService {
 
 export interface ITranslation {
     translatedText: string;
-    detectSourceLanguage: string;
+    detectedSourceLanguage: string;
 }
 
 export interface ISupportedLanguage {
