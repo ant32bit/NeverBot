@@ -13,8 +13,9 @@ export abstract class TranslationService {
             .then(result => {
                 try {
                     const resultData = result[1].data.translations;
+                    console.log("Translations", resultData);
                     const translation: ITranslation = Array.isArray(resultData) ? resultData[0] : resultData;
-                    f(null, translation);
+                    f(null, TranslationService.fixMentions(translation));
                 }
                 catch(e) {
                     f(e, null);
@@ -28,6 +29,14 @@ export abstract class TranslationService {
             .getLanguages('en')
             .then(r => f(null, r[0]))
             .catch(e => f(e, null));
+    }
+
+    private static fixMentions(t: ITranslation): ITranslation {
+        let updated = t.translatedText;
+        updated = updated.replace(/<(@!?)\s+(\d+)>/g, '<$1$2>');
+        updated = updated.replace(/<\s*(?:#|＃)\s*(\d+)>/g, '<#$1>');
+        t.translatedText = updated;
+        return t;
     }
 }
 
