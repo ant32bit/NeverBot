@@ -11,6 +11,7 @@ import { CasinoRoutes } from './modules/casino/routes';
 import { ShopRoutes } from './modules/shop/routes';
 import { ItemRoutes } from './modules/items/routes';
 import { SayRoutes } from './modules/say/routes';
+import { SudoRoutes } from './modules/sudo/routes';
 
 const config = ConfigService.GetGlobalConfig();
 const client = new Client();
@@ -25,6 +26,7 @@ AdminRoutes.RegisterRoutes(router);
 ShopRoutes.RegisterRoutes(router);
 ItemRoutes.RegisterRoutes(router);
 SayRoutes.RegisterRoutes(router);
+SudoRoutes.RegisterRoutes(router);
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);

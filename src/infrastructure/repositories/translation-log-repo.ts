@@ -25,4 +25,25 @@ export class TranslationLogRepository {
             `INSERT INTO said (server, user, input, output, language, date) VALUES(?, ?, ?, ?, ?, ?)`, 
             [server, user, input, output, language, Date.now()]);
     }
+
+    public find(server: string, text: string, f: (err: Error, logs: ILog[]) => void) {
+        const wildcard = `%${text}%`;
+        this._db.all(
+            `SELECT user, input, output, date 
+               FROM said 
+              WHERE server = ? 
+                AND (input LIKE ? OR output LIKE ?) 
+              ORDER BY date DESC 
+              LIMIT 10`,
+              [server, wildcard, wildcard],
+              f
+        );
+    }
+}
+
+export interface ILog {
+    user: string;
+    input: string;
+    output: string;
+    date: number;
 }
