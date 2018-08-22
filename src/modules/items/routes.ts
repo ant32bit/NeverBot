@@ -84,5 +84,7 @@ export abstract class ItemRoutes {
                 });
             }
         });
+
+        router.RegisterRoute
     }
 }

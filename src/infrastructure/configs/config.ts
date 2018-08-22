@@ -5,4 +5,5 @@ export interface IConfig {
     prefix: string;
     allowance: number;
     currency: string;
+    googleApiKeyPath: string;
 }
